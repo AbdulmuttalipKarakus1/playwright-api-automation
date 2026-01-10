@@ -1,0 +1,43 @@
+{
+  "name": "api-automation-playwright",
+  "version": "1.0.0",
+  "description": "API Test Automation Framework with Playwright and TypeScript",
+  "scripts": {
+    "test": "npx playwright test",
+    "test:smoke": "npx playwright test --grep @smoke",
+    "test:regression": "npx playwright test --grep @regression",
+    "test:ui": "npx playwright test --ui",
+    "test:headed": "npx playwright test --headed",
+    "test:debug": "KEEP_CONTAINER_RUNNING=true npx playwright test",
+    "report": "npx playwright show-report",
+    "check:runtime": "bash scripts/check-docker.sh",
+    "db:shell": "docker exec -it $(docker ps -q --filter ancestor=postgres:16-alpine | head -1) psql -U testuser -d api_test_db",
+    "db:logs": "docker exec -it $(docker ps -q --filter ancestor=postgres:16-alpine | head -1) psql -U testuser -d api_test_db -c 'SELECT id, test_name, method, endpoint, response_status, execution_time_ms, TO_CHAR(created_at, '\"'\"'HH24:MI:SS'\"'\"') as time FROM api_logs.api_logs ORDER BY created_at DESC LIMIT 20;'",
+    "db:stop": "docker ps -q --filter ancestor=postgres:16-alpine | xargs -r docker stop || echo 'No PostgreSQL containers running'",
+    "db:clean": "docker ps -aq --filter ancestor=postgres:16-alpine | xargs -r docker rm -f || echo 'No PostgreSQL containers to clean'",
+    "db:stats": "docker ps --filter ancestor=postgres:16-alpine --format 'table {{.ID}}\\t{{.Status}}\\t{{.Ports}}'",
+    "db:status": "docker ps --filter ancestor=postgres:16-alpine",
+    "pretest": "bash scripts/check-docker.sh"
+  },
+  "keywords": [
+    "playwright",
+    "typescript",
+    "api-testing",
+    "automation",
+    "testcontainers",
+    "postgresql"
+  ],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@playwright/test": "^1.48.0",
+    "@testcontainers/postgresql": "^10.13.2",
+    "@types/node": "^22.0.0",
+    "@types/pg": "^8.11.0",
+    "dotenv": "^16.4.5",
+    "pg": "^8.13.1",
+    "testcontainers": "^10.13.2",
+    "typescript": "^5.6.0"
+  },
+  "dependencies": {}
+}
