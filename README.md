@@ -67,16 +67,6 @@ npm run test:smoke
 npm run test:regression
 ```
 
-### Run in UI mode (interactive)
-```bash
-npm run test:ui
-```
-
-### Run in headed mode (browser visible)
-```bash
-npm run test:headed
-```
-
 ### Run in debug mode (container stays running)
 ```bash
 npm run test:debug
@@ -118,6 +108,10 @@ Shows details of the last 20 test runs:
 - Test name
 - HTTP method (GET, POST, PUT, DELETE)
 - Endpoint URL
+- Request Header
+- Request Body
+- Response Header
+- Response Body
 - Response status code
 - Execution time (ms)
 - Timestamp
@@ -204,8 +198,12 @@ All API tests are automatically logged to PostgreSQL database **when running in 
 
 - Test name
 - HTTP method (GET, POST, PUT, DELETE)
-- Endpoint
-- Response status
+- Endpoint URL
+- Request Header
+- Request Body
+- Response Header
+- Response Body
+- Response status code
 - Execution time (ms)
 - Timestamp
 
@@ -356,15 +354,3 @@ This framework includes tests for:
 - ✅ User CRUD operations
 - ✅ Error handling
 - ✅ Response time validation
-
-## 🎯 Future Enhancements
-
-- [ ] CI/CD pipeline integration
-- [ ] Parallel test execution
-- [ ] Custom reporters
-- [ ] API mock server integration
-- [ ] Performance testing capabilities
-
----
-
-**Note**: This framework should undergo security and performance testing before being used in production environments.
