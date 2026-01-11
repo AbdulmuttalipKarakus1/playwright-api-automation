@@ -107,20 +107,17 @@ Shows details of the last 20 test runs:
 npm run db:shell
 ```
 
-### Stop the database
-```bash
-npm run db:stop
-```
-
-### Run manual queries
-```bash
-npm run db:shell
-```
 Then execute simple SQL queries:
 ```sql
 SELECT id, test_name, endpoint, response_status FROM api_logs.api_logs ORDER BY created_at DESC LIMIT 10;
 ```
 > **Note**: For complex sql query, use database tools like TablePlus, DBeaver instead of terminal for best view.
+
+### Stop the database
+```bash
+npm run db:stop
+```
+
 ## 📁 Project Structure
 
 ```
