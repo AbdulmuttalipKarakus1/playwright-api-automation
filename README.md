@@ -67,16 +67,6 @@ npm run test:smoke
 npm run test:regression
 ```
 
-### Run in debug mode (container stays running)
-```bash
-npm run test:debug
-```
-**Use this mode when you want to:**
-- Persist database logs for analysis
-- Keep PostgreSQL container running after tests
-- Query test logs via `npm run db:logs`
-- Manually inspect the database
-
 ## 📊 Reporting
 
 ### Playwright HTML Report
@@ -90,8 +80,7 @@ The Playwright report includes:
 - ✅ Test execution summary (passed, failed, skipped)
 - ⏱️ Execution time for each test
 - 🔍 Detailed test steps and assertions
-- 📸 Screenshots on failure (if configured)
-- 🎬 Video recordings (if configured)
+- 📸 Screenshots on failure
 - 🔗 API request/response details
 - 📊 Visual timeline of test execution
 
@@ -101,8 +90,6 @@ View API test logs stored in PostgreSQL:
 ```bash
 npm run db:logs
 ```
-
-> **Important**: Database logs are only saved when tests run in debug mode (`npm run test:debug`). In regular test runs, the container is cleaned up immediately after tests complete.
 
 Shows details of the last 20 test runs:
 - Test name
@@ -115,13 +102,6 @@ Shows details of the last 20 test runs:
 - Response status code
 - Execution time (ms)
 - Timestamp
-
-**To persist logs, run tests in debug mode:**
-```bash
-npm run test:debug
-```
-This keeps the PostgreSQL container running after tests, allowing you to query the logs.
-
 
 ## 🗄️ Database Management
 
@@ -139,10 +119,11 @@ npm run db:stop
 ```bash
 npm run db:shell
 ```
-Then execute SQL queries:
+Then execute simple SQL queries:
 ```sql
-SELECT * FROM api_logs.api_logs ORDER BY created_at DESC LIMIT 10;
+SELECT id, test_name, endpoint, response_status FROM api_logs.api_logs ORDER BY created_at DESC LIMIT 10;
 ```
+> **Note**: For complex sql query use database tool instead of terminal for best view.
 
 ## 📁 Project Structure
 
@@ -194,7 +175,7 @@ test('@smoke GET /api/users should return 200', async ({ request }) => {
 
 ## 🔍 Logging
 
-All API tests are automatically logged to PostgreSQL database **when running in debug mode**:
+All API tests are automatically logged to PostgreSQL database:
 
 - Test name
 - HTTP method (GET, POST, PUT, DELETE)
@@ -207,7 +188,7 @@ All API tests are automatically logged to PostgreSQL database **when running in 
 - Execution time (ms)
 - Timestamp
 
-> **Note**: To enable database logging, run tests with `npm run test:debug`. This keeps the PostgreSQL container running after tests and persists all logs. In regular test runs (`npm test`), the container is automatically cleaned up and logs are not persisted.
+> **Note**: To enable database logging, KEEP_CONTAINER_RUNNING=true should be in env file. If it is false, the container is automatically cleaned up and logs are not persisted.
 
 ## 🐳 Container Runtime (Colima)
 
@@ -273,60 +254,6 @@ Edit `playwright.config.ts` according to your needs.
 - **database.config.ts**: Database connection settings
 - **global-setup.ts**: Runs once before all tests
 - **global-teardown.ts**: Runs once after all tests
-
-## 🤝 Contributing
-
-1. Fork the repository
-2. Create a feature branch (`git checkout -b feature/amazing-feature`)
-3. Commit your changes (`git commit -m 'feat: Add amazing feature'`)
-4. Push to the branch (`git push origin feature/amazing-feature`)
-5. Open a Pull Request
-
-
-## 👨‍💻 Developer Notes
-
-### Troubleshooting
-
-**Colima not running error:**
-```bash
-# Check if Colima is running
-colima status
-
-# Start Colima
-colima start
-
-# If issues persist, restart Colima
-colima stop
-colima start
-
-# Check Docker socket
-docker ps
-```
-
-**PostgreSQL connection error:**
-```bash
-# Check container logs
-npm run db:logs
-
-# Check container status
-docker ps -a
-
-# Ensure Colima has enough resources
-colima stop
-colima start --cpu 4 --memory 8
-```
-
-**Testcontainers Issues:**
-```bash
-# Verify Colima is running with proper configuration
-colima status
-
-# Check if Docker socket is accessible
-docker info
-
-# Restart Colima with recommended settings
-colima restart --cpu 4 --memory 8 --disk 60
-```
 
 ### Best Practices
 
