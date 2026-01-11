@@ -90,6 +90,7 @@ View API test logs stored in PostgreSQL:
 ```bash
 npm run db:logs
 ```
+> **Note**: It shows some columns only. For more logs, you can check it on database tools like TablePlus, DBeaver...
 
 Shows details of the last 20 test runs:
 - Test name
@@ -119,8 +120,7 @@ Then execute simple SQL queries:
 ```sql
 SELECT id, test_name, endpoint, response_status FROM api_logs.api_logs ORDER BY created_at DESC LIMIT 10;
 ```
-> **Note**: For complex sql query use database tool instead of terminal for best view.
-
+> **Note**: For complex sql query, use database tools like TablePlus, DBeaver instead of terminal for best view.
 ## 📁 Project Structure
 
 ```
